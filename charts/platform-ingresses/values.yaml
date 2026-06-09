@@ -1,0 +1,19 @@
+domain: canhnq.online
+ingressClassName: nginx
+dnsTargets:
+  - 3.1.200.145
+  - 54.151.217.162
+  - 175.41.156.25
+
+argocd:
+  enabled: true
+  host: argocd.canhnq.online
+  serviceName: argocd-server
+  servicePort: 443
+
+grafana:
+  enabled: true
+  host: grafana.canhnq.online
+  serviceName: kube-prometheus-stack-grafana
+  servicePort: 80
+

@@ -1,0 +1,7 @@
+apiVersion: v2
+name: platform-ingresses
+description: Ingress resources for platform services.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+

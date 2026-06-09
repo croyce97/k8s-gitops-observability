@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    chart: external-dns
+    targetRevision: 1.21.1
+    helm:
+      releaseName: external-dns
+      values: |
+        provider:
+          name: aws
+        sources:
+          - ingress
+        domainFilters:
+          - canhnq.online
+        policy: upsert-only
+        registry: txt
+        txtOwnerId: ec2-ssm-lab
+        env:
+          - name: AWS_DEFAULT_REGION
+            value: ap-southeast-1
+        extraArgs:
+          - --aws-zone-type=public
+        resources:
+          requests:
+            cpu: 25m
+            memory: 64Mi
+          limits:
+            cpu: 100m
+            memory: 128Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: external-dns
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+

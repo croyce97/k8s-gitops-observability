@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-ingresses
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/croyce97/k8s-gitops-observability.git
+    targetRevision: main
+    path: charts/platform-ingresses
+    helm:
+      releaseName: platform-ingresses
+      valueFiles:
+        - values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+

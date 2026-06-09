@@ -1,0 +1,24 @@
+{{- if .Values.grafana.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: monitoring
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.grafana.host | quote }}
+    external-dns.alpha.kubernetes.io/target: {{ join "," .Values.dnsTargets | quote }}
+spec:
+  ingressClassName: {{ .Values.ingressClassName | quote }}
+  rules:
+    - host: {{ .Values.grafana.host | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.grafana.serviceName | quote }}
+                port:
+                  number: {{ .Values.grafana.servicePort }}
+{{- end }}
+

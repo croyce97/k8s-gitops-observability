@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rancher
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://releases.rancher.com/server-charts/stable
+    chart: rancher
+    targetRevision: 2.14.2
+    helm:
+      releaseName: rancher
+      values: |
+        hostname: rancher.canhnq.online
+        replicas: 1
+        bootstrapPassword: admin
+        ingress:
+          ingressClassName: nginx
+          extraAnnotations:
+            external-dns.alpha.kubernetes.io/hostname: rancher.canhnq.online
+            external-dns.alpha.kubernetes.io/target: 3.1.200.145,54.151.217.162,175.41.156.25
+          tls:
+            source: rancher
+        resources:
+          requests:
+            cpu: 250m
+            memory: 1Gi
+          limits:
+            cpu: "1"
+            memory: 2Gi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cattle-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
