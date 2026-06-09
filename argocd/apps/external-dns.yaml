@@ -20,7 +20,7 @@ spec:
           - canhnq.online
         policy: upsert-only
         registry: txt
-        txtOwnerId: ec2-ssm-lab
+        txtOwnerId: default
         env:
           - name: AWS_DEFAULT_REGION
             value: ap-southeast-1
@@ -42,4 +42,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
